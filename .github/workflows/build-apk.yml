@@ -28,9 +28,9 @@ jobs:
           sudo apt-get install -y \
             git zip unzip openjdk-17-jdk \
             python3-pip autoconf libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo5 cmake libffi-dev libssl-dev \
-            patchelf
+            zlib1g-dev libncurses-dev \
+            libffi-dev libssl-dev \
+            patchelf cmake
 
       - name: Install buildozer
         run: |
@@ -49,9 +49,15 @@ jobs:
 
       - name: Build debug APK
         run: |
-          buildozer -v android debug
+          # Accept Android SDK licenses non-interactively
+          yes | buildozer -v android debug || true
+          # Retry once if license step exited early
+          if ! ls bin/*.apk >/dev/null 2>&1; then
+            yes | buildozer -v android debug
+          fi
         env:
           BUILDOZER_WARN_ON_ROOT: "0"
+          BUILDOZER_ANDROID_ACCEPT_ANDROID_SDK_LICENSES: "1"
 
       - name: List APK output
         run: |

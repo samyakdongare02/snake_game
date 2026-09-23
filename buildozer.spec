@@ -29,7 +29,7 @@ fullscreen = 1
 # Android API
 android.api = 33
 android.minapi = 21
-android.ndk = 25b
+# Let buildozer pick a working NDK version for the runner
 
 # Bootstrap
 p4a.bootstrap = sdl2
@@ -38,6 +38,8 @@ android.permissions =
 
 # Reduce CI noise / first-build time a bit
 android.skip_update = False
+# Accept licenses in CI
+android.accept_sdk_license = True
 log_level = 2
 
 [buildozer]
