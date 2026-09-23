@@ -3,6 +3,9 @@
 # (str) Application name
 title = Nokia Snake
 
+# (str) Application version
+version = 0.1
+
 # (str) Package name
 package.name = nokiasnake
 
