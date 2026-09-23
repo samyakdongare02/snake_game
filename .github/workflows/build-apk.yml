@@ -43,9 +43,9 @@ jobs:
           path: |
             ~/.buildozer
             ~/.android
-          key: buildozer-v2-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
+          key: buildozer-v3-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}-${{ hashFiles('p4a-recipes/**') }}
           restore-keys: |
-            buildozer-v2-${{ runner.os }}-
+            buildozer-v3-${{ runner.os }}-
 
       - name: Build debug APK
         run: |

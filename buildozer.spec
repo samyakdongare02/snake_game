@@ -22,6 +22,9 @@ source.main = main.py
 # (list) Extra source files
 source.include_patterns = main.py,snake_game_android.py,buildozer.spec
 
+# Custom recipes (fixed libffi - no autogen)
+p4a.local_recipes = ./p4a-recipes
+
 # (list) Application dependencies
 requirements = python3,pygame,sdl2,pyjnius
 
