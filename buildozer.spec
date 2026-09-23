@@ -29,20 +29,23 @@ requirements = python3,pygame,sdl2,pyjnius
 orientation = landscape
 fullscreen = 1
 
-# Android API
-android.api = 33
-android.minapi = 21
-# Let buildozer pick a working NDK version for the runner
+# Android API / min SDK (21 breaks libffi on modern runners)
+android.api = 34
+android.minapi = 24
+
+# Single modern arch - avoids armeabi-v7a/libffi autotools failure
+android.archs = arm64-v8a
+
+# Known-good NDK for p4a recipes
+android.ndk = 25b
 
 # Bootstrap
 p4a.bootstrap = sdl2
 android.enable_androidx = True
 android.permissions =
 
-# Reduce CI noise / first-build time a bit
-android.skip_update = False
-# Accept licenses in CI
 android.accept_sdk_license = True
+android.skip_update = False
 log_level = 2
 
 [buildozer]
