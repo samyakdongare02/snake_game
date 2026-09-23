@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+bin/
+.buildozer/
+snake_scores.txt
