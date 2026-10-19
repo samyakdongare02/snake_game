@@ -74,6 +74,20 @@ class LibffiRecipe(Recipe):
 
     def build_arch(self, arch):
         env = self.get_recipe_env(arch)
+
+        # Newer NDK clang (r28c / clang 19+) promotes
+        # -Wimplicit-function-declaration to a hard error by default.  libffi
+        # 3.4.4's src/tramp.c calls open_temp_exec_file() -- a non-static
+        # helper defined in src/closures.c -- without a visible prototype, so
+        # that single call stops the compile on modern toolchains even though
+        # the symbol resolves fine at link time.  Downgrade just that one
+        # diagnostic back to a warning so the stock release tarball builds
+        # unmodified (consistent with the ldflags_override approach below).
+        cflags = env.get("CFLAGS", "")
+        env["CFLAGS"] = (
+            cflags + " -Wno-error=implicit-function-declaration"
+        ).strip()
+
         build_dir = self.get_build_dir(arch.arch)
 
         with current_directory(build_dir):
