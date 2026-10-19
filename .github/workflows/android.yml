@@ -135,6 +135,17 @@ jobs:
         run: |
           set -o pipefail
           export BUILDOZER_WARN_ON_ROOT=0
+          # p4a resolves kivy's ``requests`` dependency down to
+          # ``charset-normalizer``.  As of 3.5.x its wheels are published with
+          # an ``android_*`` platform tag.  p4a's resolver correctly picks the
+          # Android-tagged wheel for the target, but the follow-up
+          # ``pip install --target`` runs *host* pip (x86_64 Linux), which
+          # rejects it with "not a supported wheel on this platform".
+          # Constraining the dependency below 3.5 forces the universal
+          # ``py3-none-any`` wheel instead, which installs cleanly on any host
+          # (requests only requires ``charset_normalizer<4,>=2``).
+          printf 'charset-normalizer<3.5\n' > "$RUNNER_TEMP/build-constraints.txt"
+          export PIP_CONSTRAINT="$RUNNER_TEMP/build-constraints.txt"
           buildozer -v android release 2>&1 | tail -n 400
 
       - name: Sign and verify the APK
